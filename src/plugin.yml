@@ -1,0 +1,11 @@
+name: StaffChatX
+main: com.SirBlobman.staffchatx.StaffChatX
+version: 0.0.1
+description: Do your staff need privacy?
+commands:
+  staffchat:
+    aliases: [sc]
+    description: Toggle staff chat or send a message
+    usage: /<command> toggle OR /<command> <message...>
+    permission: staffchat.send
+    permission-message: Are you staff? I was not sure so the message did not get sent.
