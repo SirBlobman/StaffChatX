@@ -1,6 +1,6 @@
 name: StaffChatX
 main: com.SirBlobman.staffchatx.StaffChatX
-version: 0.0.1
+version: 0.0.2
 description: Do your staff need privacy?
 commands:
   staffchat:
