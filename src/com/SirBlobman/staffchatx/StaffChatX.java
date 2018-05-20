@@ -27,7 +27,7 @@ public class StaffChatX extends JavaPlugin {
         final String cmd = c.getName().toLowerCase();
         if(cmd.equals("staffchat")) {
             if(args.length > 0) {
-                final String sub = args[0].toLowerCase();
+                String sub = args[0].toLowerCase();
                 if(sub.equals("toggle")) {
                     if(cs instanceof Player) {
                         Player p = (Player) cs;
@@ -57,16 +57,22 @@ public class StaffChatX extends JavaPlugin {
                         cs.sendMessage(msg);
                         return true;
                     } else return false;
+                } else if(sub.equals("reload")) {
+                    Config.load();
+                    String msg = Config.getMessage("messages.command.reload");
+                    cs.sendMessage(msg);
+                    return true;
                 } else {
-                    final StringBuilder sb = new StringBuilder();
-                    for(final String s : args) sb.append(" " + s);
-                    final String msg = sb.toString();
-                    final String trim = msg.trim();
+                    StringBuilder sb = new StringBuilder();
+                    for(String s : args) sb.append(" " + s);
+                    String msg = sb.toString();
+                    String trim = msg.trim();
                     sendStaffMessage(cs, trim);
                     return true;
                 }
             } else {
-                final String msg = Config.getMessage("messages.command.usage");
+                String msg = Config.getMessage("messages.command.usage");
+                msg = msg.replace("<command>", label);
                 cs.sendMessage(msg);
                 return true;
             }
@@ -86,8 +92,8 @@ public class StaffChatX extends JavaPlugin {
             console.sendMessage(color);
         }
 
+        String perm = "staffchat.read";
         for(Player p : Bukkit.getOnlinePlayers()) {
-            final String perm = "staffchat.read";
             if(p.hasPermission(perm)) p.sendMessage(color);
         }
     }
