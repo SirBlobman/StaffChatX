@@ -58,6 +58,8 @@ public class Config {
     
     private static void defaults() {
         set("options.log to console", true, false);
+        set("options.read permission", "staffchat.read", false);
+        set("options.send permission", "staffchat.send", false);
         set("messages.format", "&5&lSTAFF &f{username}&r &7\u00BB&r {message}", false);
         set("messages.command.usage", "&f/<command> <toggle> &eOR &f/<command> <message...>", false);
         set("messages.command.not player", "&cYou are not a Player", false);

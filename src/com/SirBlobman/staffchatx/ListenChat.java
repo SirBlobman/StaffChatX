@@ -14,7 +14,7 @@ public class ListenChat implements Listener {
     @EventHandler
     public void chat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
-        if(STAFF_CHAT.contains(p) && p.hasPermission("staffchat.send")) {
+        if(STAFF_CHAT.contains(p) && p.hasPermission(Config.getMessage("options.send permission")) {
             e.setCancelled(true);
             String msg = e.getMessage();
             StaffChatX.sendStaffMessage(p, msg);
