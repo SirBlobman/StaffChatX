@@ -92,7 +92,7 @@ public class StaffChatX extends JavaPlugin {
             console.sendMessage(color);
         }
 
-        String perm = "staffchat.read";
+        String perm = Config.getMessage("messages.read permission");
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(p.hasPermission(perm)) p.sendMessage(color);
         }
