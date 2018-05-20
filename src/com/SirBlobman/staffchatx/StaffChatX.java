@@ -31,16 +31,23 @@ public class StaffChatX extends JavaPlugin {
                 if(sub.equals("toggle")) {
                     if(cs instanceof Player) {
                         Player p = (Player) cs;
-                        String msg = "";
-                        if(ListenChat.STAFF_CHAT.contains(p)) {
-                            ListenChat.STAFF_CHAT.remove(p);
-                            msg = Config.getMessage("messages.command.removed");
+                        String perm = Config.get("options.permissions.toggle", String.class);
+                        if(p.hasPermission(perm)) {
+                            String msg = "";
+                            if(ListenChat.STAFF_CHAT.contains(p)) {
+                                ListenChat.STAFF_CHAT.remove(p);
+                                msg = Config.getMessage("messages.command.removed");
+                            } else {
+                                ListenChat.STAFF_CHAT.add(p);
+                                msg = Config.getMessage("messages.command.added");
+                            }
+                            cs.sendMessage(msg);
+                            return true;
                         } else {
-                            ListenChat.STAFF_CHAT.add(p);
-                            msg = Config.getMessage("messages.command.added");
+                            String error = Config.getMessage("messages.no permission");
+                            p.sendMessage(error);
+                            return true;
                         }
-                        cs.sendMessage(msg);
-                        return true;
                     } else if(cs instanceof ConsoleCommandSender) {
                         Config.load();
                         boolean log = Config.get("options.log to console", Boolean.class);
@@ -58,17 +65,31 @@ public class StaffChatX extends JavaPlugin {
                         return true;
                     } else return false;
                 } else if(sub.equals("reload")) {
-                    Config.load();
-                    String msg = Config.getMessage("messages.command.reload");
-                    cs.sendMessage(msg);
-                    return true;
+                    String perm = Config.get("options.permissions.reload", String.class);
+                    if(cs.hasPermission(perm)) {
+                        Config.load();
+                        String msg = Config.getMessage("messages.command.reload");
+                        cs.sendMessage(msg);
+                        return true;
+                    } else {
+                        String error = Config.getMessage("messages.no permission");
+                        cs.sendMessage(error);
+                        return true;
+                    }
                 } else {
-                    StringBuilder sb = new StringBuilder();
-                    for(String s : args) sb.append(" " + s);
-                    String msg = sb.toString();
-                    String trim = msg.trim();
-                    sendStaffMessage(cs, trim);
-                    return true;
+                    String perm = Config.get("options.permissions.send", String.class);
+                    if(cs.hasPermission(perm)) {
+                        StringBuilder sb = new StringBuilder();
+                        for(String s : args) sb.append(" " + s);
+                        String msg = sb.toString();
+                        String trim = msg.trim();
+                        sendStaffMessage(cs, trim);
+                        return true;
+                    } else {
+                        String error = Config.getMessage("messages.no permission");
+                        cs.sendMessage(error);
+                        return true;
+                    }
                 }
             } else {
                 String msg = Config.getMessage("messages.command.usage");

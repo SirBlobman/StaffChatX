@@ -58,14 +58,17 @@ public class Config {
     
     private static void defaults() {
         set("options.log to console", true, false);
-        set("options.read permission", "staffchat.read", false);
-        set("options.send permission", "staffchat.send", false);
+        set("options.permissions.read", "staffchat.read", false);
+        set("options.permissions.send", "staffchat.send", false);
+        set("options.permissions.toggle", "staffchat.toggle", false);
+        set("options.permissions.reload", "staffchat.reload", false);
         set("messages.format", "&5&lSTAFF &f{username}&r &7\u00BB&r {message}", false);
+        set("messages.no permission", "You are not a staff member!", false);
         set("messages.command.usage", "&f/<command> <toggle> &eOR &f/<command> <message...>", false);
         set("messages.command.not player", "&cYou are not a Player", false);
         set("messages.command.added", "&5Staff Chat: &2on", false);
         set("messages.command.removed", "&5Staff Chat: &2off", false);
-        set("messages.command.reload", "&5Staff Chat: &rReloaded configs", false);
+        set("messages.command.reload", "&5&l[&9StaffChatX&5&l]&r Reloaded configs", false);
         save();
     }
     
