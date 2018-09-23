@@ -1,0 +1,30 @@
+# Config Options for StaffChatX
+options:
+  # Should staff chat messages also be sent to console?
+  log to console: true
+
+  # Options related to permissions
+  permissions:
+    # Permission that allows players to do '/staffchat toggle'
+    toggle: "staffchatx.toggle"
+    
+    # Permission that allows players to do '/staffchat reload'
+    reload: "staffchatx.reload"
+    
+    # Permission that allows players to send staff chat messages
+    # They can either do '/sc <message...>' or '/sc toggle' then type in chat
+    send: "staffchatx.send"
+    
+    # Permission that allows players to read staff chat messages
+    read: "staffchatx.read"
+    
+# Messages and Formatting for StaffChatX
+messages:
+  format: "&5&lStaffChat &8&l» &a[{username}] &7&o{message}"
+  no permission: "&c&oYou are not allowed to do that!"
+  
+  command:
+    reload: "&6The config.yml file for StaffChatX has been reloaded"
+    added: "&5&lStaffChat: &2&lON"
+    removed: "&5&lStaffChat: &4&lOFF"
+    

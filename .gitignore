@@ -11,3 +11,4 @@
 # Custom
 *.src.zip
 *.xml
+/target/
