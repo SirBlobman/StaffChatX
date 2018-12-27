@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.configuration;
+package com.SirBlobman.staffchatx.bukkit.configuration;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -1,10 +1,10 @@
-package com.SirBlobman.staffchatx;
+package com.SirBlobman.staffchatx.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.SirBlobman.staffchatx.command.CommandStaffChat;
-import com.SirBlobman.staffchatx.listener.ListenStaffChat;
+import com.SirBlobman.staffchatx.bukkit.command.CommandStaffChat;
+import com.SirBlobman.staffchatx.bukkit.listener.ListenStaffChat;
 
 import java.io.File;
 import java.util.logging.Logger;

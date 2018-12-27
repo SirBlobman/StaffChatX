@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.command;
+package com.SirBlobman.staffchatx.bukkit.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-import com.SirBlobman.staffchatx.configuration.ConfigOptions;
-import com.SirBlobman.staffchatx.listener.ListenStaffChat;
+import com.SirBlobman.staffchatx.bukkit.configuration.ConfigOptions;
+import com.SirBlobman.staffchatx.bukkit.listener.ListenStaffChat;
 
 public class CommandStaffChat implements CommandExecutor {
     @Override

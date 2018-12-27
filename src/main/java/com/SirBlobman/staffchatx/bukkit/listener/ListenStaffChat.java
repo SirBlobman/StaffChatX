@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.listener;
+package com.SirBlobman.staffchatx.bukkit.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-import com.SirBlobman.staffchatx.configuration.ConfigOptions;
+import com.SirBlobman.staffchatx.bukkit.configuration.ConfigOptions;
 
 import java.util.ArrayList;
 import java.util.List;

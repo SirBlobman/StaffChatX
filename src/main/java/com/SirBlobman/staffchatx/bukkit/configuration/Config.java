@@ -1,9 +1,9 @@
-package com.SirBlobman.staffchatx.configuration;
+package com.SirBlobman.staffchatx.bukkit.configuration;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.SirBlobman.staffchatx.StaffChatX;
+import com.SirBlobman.staffchatx.bukkit.StaffChatX;
 
 import java.io.File;
 import java.io.InputStream;

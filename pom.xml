@@ -26,12 +26,12 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- StaffChatX BungeeCord (for creating jar) -->
+		<!-- BungeeCord -->
 		<dependency>
-			<groupId>com.SirBlobman</groupId>
-			<artifactId>StaffChatX-BungeeCord</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>1.13-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
