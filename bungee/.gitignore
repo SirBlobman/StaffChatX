@@ -12,3 +12,6 @@
 *.src.zip
 *.xml
 /target/
+
+# Don't Ignore
+!pom.xml

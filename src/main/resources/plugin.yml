@@ -1,6 +1,6 @@
 name: StaffChatX
-main: com.SirBlobman.staffchatx.bungee.StaffChatX
-version: 0.0.7
+main: com.SirBlobman.staffchatx.StaffChatX
+version: 0.0.8
 api-version: 1.13
 description: Do your staff need privacy?
 
