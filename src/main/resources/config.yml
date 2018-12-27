@@ -2,11 +2,19 @@
 options:
   # Should staff chat messages also be sent to console?
   log to console: true
+  
+  # Chat Prefix
+  # This is used when Staff Chat is toggled for automatic mode
+  # Leave it blank to not require a prefix
+  prefix: ""
 
   # Options related to permissions
   permissions:
     # Permission that allows players to do '/staffchat toggle'
     toggle: "staffchatx.toggle"
+    
+    # Permission that allows players to do '/staffchat toggleview'
+    toggleview: "staffchatx.toggle.view"
     
     # Permission that allows players to do '/staffchat reload'
     reload: "staffchatx.reload"
@@ -27,3 +35,7 @@ messages:
     reload: "&6The config.yml file for StaffChatX has been reloaded"
     added: "&5&lStaffChat: &2&lON"
     removed: "&5&lStaffChat: &4&lOFF"
+    not player: "&4&lYou are not a Player."
+    viewing:
+      added: "&5&lStaffChat Viewing: &2&lON"
+      removed: "&5&lStaffChat Viewing: &4&lOFF"

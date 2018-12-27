@@ -1,7 +1,9 @@
 name: StaffChatX
-main: com.SirBlobman.staffchatx.StaffChatX
-version: 0.0.5
+main: com.SirBlobman.staffchatx.bungee.StaffChatX
+version: 0.0.7
+api-version: 1.13
 description: Do your staff need privacy?
+
 commands:
   staffchat:
     aliases: [sc, scx, staffchatx]
@@ -9,4 +11,5 @@ commands:
     usage: |-
       /<command> reload
       OR /<command> toggle
+      OR /<command> toggleview
       OR /<command> <message...>

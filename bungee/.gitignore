@@ -1,0 +1,14 @@
+# Java Binary
+*.class
+
+# Eclipse 
+/bin/
+/.settings/
+/.externalToolBuilders/
+*.classpath
+*.project
+
+# Custom
+*.src.zip
+*.xml
+/target/

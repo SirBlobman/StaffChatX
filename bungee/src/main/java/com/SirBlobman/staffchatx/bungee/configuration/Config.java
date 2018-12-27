@@ -1,9 +1,6 @@
-package com.SirBlobman.staffchatx.configuration;
+package com.SirBlobman.staffchatx.bungee.configuration;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import com.SirBlobman.staffchatx.StaffChatX;
+import com.SirBlobman.staffchatx.bungee.StaffChatX;
 
 import java.io.File;
 import java.io.InputStream;
@@ -11,6 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 public class Config {
 	private static final File FOLDER = StaffChatX.FOLDER;
@@ -21,7 +23,7 @@ public class Config {
 	 * @param fileName The name of the file which is inside of "/plugins/StaffChatX/"
 	 * @return {@link YamlConfiguration} if it could be loaded, {@code null} if fileName is null or if the config failed to load
 	 */
-	public static YamlConfiguration loadConfig(String fileName) {
+	public static Configuration loadConfig(String fileName) {
 		try {
 			File file = new File(FOLDER, fileName);
 			if(!file.exists()) {
@@ -29,8 +31,8 @@ public class Config {
 				file.createNewFile();
 			}
 			
-			YamlConfiguration config = new YamlConfiguration();
-			config.load(file);
+			ConfigurationProvider configProvider = ConfigurationProvider.getProvider(YamlConfiguration.class);
+			Configuration config = configProvider.load(file);
 			return config;
 		} catch(Throwable ex) {
 			String error = "Failed to load file '" + FOLDER.getPath() + fileName + "' as a YamlConfiguration:";
@@ -47,15 +49,16 @@ public class Config {
 	 * @param config The configuration you want to save in YAML format
 	 * @param fileName The name of the file in "/plugins/StaffChatX/"
 	 */
-	public static void saveConfig(YamlConfiguration config, String fileName) {
+	public static void saveConfig(Configuration config, String fileName) {
 		try {
 			File file = new File(FOLDER, fileName);
 			if(!file.exists()) {
 				FOLDER.mkdirs();
 				file.createNewFile();
 			}
-			
-			config.save(file);
+
+            ConfigurationProvider configProvider = ConfigurationProvider.getProvider(YamlConfiguration.class);
+			configProvider.save(config, file);
 		} catch(Throwable ex) {
 			String error = "Failed to save file '" + FOLDER.getPath() + fileName + "' as a YamlConfiguration:";
 			StaffChatX.LOG.severe(error);
@@ -70,14 +73,15 @@ public class Config {
 	 */
 	public static void copyFromJar(String fileName) {
 		try {
-			JavaPlugin pl = StaffChatX.INSTANCE;
-			InputStream is = pl.getResource(fileName);
+			Plugin pl = StaffChatX.INSTANCE;
+			InputStream is = pl.getResourceAsStream(fileName);
 			File file = new File(FOLDER, fileName);
 			if(!file.exists()) {
 				FOLDER.mkdirs();
 				String pathName = file.getAbsolutePath();
 				Path path = Paths.get(pathName);
 				Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
+				is.close();
 			}
 		} catch(Throwable ex) {
 			String error = "Failed to copy '" + fileName + "' from the jar file:";
