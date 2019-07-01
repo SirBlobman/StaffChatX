@@ -6,19 +6,28 @@
 
 	<groupId>com.SirBlobman</groupId>
 	<artifactId>StaffChatX</artifactId>
-	<version>0.0.8</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<bukkit.plugin.name>StaffChatX</bukkit.plugin.name>
+		<bukkit.plugin.mainClass>com.SirBlobman.staffchatx.bukkit.StaffChatBukkit</bukkit.plugin.mainClass>
+		<bukkit.plugin.version>${project.version}</bukkit.plugin.version>
+		<bukkit.plugin.description>Do your staff need privacy?</bukkit.plugin.description>
+
+		<bungee.plugin.name>StaffChatX</bungee.plugin.name>
+		<bungee.plugin.mainClass>com.SirBlobman.staffchatx.bungee.StaffChatBungee</bungee.plugin.mainClass>
+		<bungee.plugin.version>${project.version}</bungee.plugin.version>
 	</properties>
 
 	<name>StaffChatX</name>
 	<description>Do your staff need privacy?</description>
 
 	<dependencies>
-		<!-- Bukkit 1.8 -->
+		<!-- Bukkit API -->
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
@@ -36,43 +45,11 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<!-- Shade BungeeCord Version -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<artifactSet>
-						<includes>
-							<include>com.SirBlobman:**</include>
-						</includes>
-					</artifactSet>
-				</configuration>
-			</plugin>
-			
-			<!-- Remove Extra Maven Folders -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<manifest>
-							<addClasspath>false</addClasspath>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

@@ -3,39 +3,53 @@ options:
   # Should staff chat messages also be sent to console?
   log to console: true
   
+  # If "log to console" is "true", what channel should console be in?
+  # Channels must use the IDs in the options below
+  # Leave it blank for all channels
+  console channel: ""
+  
   # Chat Prefix
   # This is used when Staff Chat is toggled for automatic mode
   # Leave it blank to not require a prefix
   prefix: ""
+  
+  # This is the format used for the default channel
+  default format: "&5&lStaffChat &8&l\u00BB &a[{username}] &7&o{message}"
+  
 
-  # Options related to permissions
-  permissions:
-    # Permission that allows players to do '/staffchat toggle'
-    toggle: "staffchatx.toggle"
+
+# Channel Configuration for StaffChatX
+channels:
+  # The name of this channel is `channel1`
+  # Make sure it's unique for each channel
+  channel1:
+    # This is the permission required to use the channel
+    permission: "staffchatx.channel.mod"
     
-    # Permission that allows players to do '/staffchat toggleview'
-    toggleview: "staffchatx.toggle.view"
+    # This is the chat format for players in the channel
+    format: "&5&lStaffChat &5&l[&dMod&5&l] &8&l\u00BB &a[{username}] &7&o{message}"
     
-    # Permission that allows players to do '/staffchat reload'
-    reload: "staffchatx.reload"
-    
-    # Permission that allows players to send staff chat messages
-    # They can either do '/sc <message...>' or '/sc toggle' then type in chat
-    send: "staffchatx.send"
-    
-    # Permission that allows players to read staff chat messages
-    read: "staffchatx.read"
-    
+  channel2:
+    permission: "staffchatx.channel.admin"
+    format: "&5&lStaffChat &4&l[&cAdmin&4&l] &8&l\u00BB &a[{username}] &7&o{message}"
+
+  
 # Messages and Formatting for StaffChatX
 messages:
-  format: "&5&lStaffChat &8&l» &a[{username}] &7&o{message}"
   no permission: "&c&oYou are not allowed to do that!"
+  not player: "&cThis command can only be executed by a Player."
+  invalid channel: "&cCould not find channel named '&a{channelName}&c'."
   
   command:
-    reload: "&6The config.yml file for StaffChatX has been reloaded"
-    added: "&5&lStaffChat: &2&lON"
-    removed: "&5&lStaffChat: &4&lOFF"
-    not player: "&4&lYou are not a Player."
-    viewing:
-      added: "&5&lStaffChat Viewing: &2&lON"
-      removed: "&5&lStaffChat Viewing: &4&lOFF"
+    usage: "&f&lProper Usage:&r\n  - /<command> reload\n  - /<command> ts/togglesend <off/channel>\n  - /<command> tv/toggleview <channel>\n  - /<command> send <channel> <message...>"
+  
+    reloaded: "&6The config.yml file for StaffChatX has been reloaded"
+    
+    toggleview:
+      enabled: "&aYou are now viewing the channel &c&o{channelName}&a."
+      disabled: "&aYou will no longer see any messages from the channel &c&o{channelName}&a."
+      console default: "&aYou are now viewing all channels."
+    
+    togglesend:
+      channel: "&aYou are now sending messages to channel &c&o{channelName}&a."
+      disabled: "&cYou have disabled your staff chat."

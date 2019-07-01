@@ -1,15 +1,11 @@
-name: StaffChatX
-main: com.SirBlobman.staffchatx.StaffChatX
-version: 0.0.8
-api-version: 1.13
-description: Do your staff need privacy?
+name: "${bukkit.plugin.name}"
+main: "${bukkit.plugin.mainClass}"
+version: "${bukkit.plugin.version}"
+description: "${bukkit.plugin.description}"
+author: "SirBlobman"
 
 commands:
-  staffchat:
-    aliases: [sc, scx, staffchatx]
+  staffchatx:
+    aliases: [sc, scx, staffchat]
     description: All commands related to staff chat (reload, toggle, send message)
-    usage: |-
-      /<command> reload
-      OR /<command> toggle
-      OR /<command> toggleview
-      OR /<command> <message...>
+    usage: "/<command>"
