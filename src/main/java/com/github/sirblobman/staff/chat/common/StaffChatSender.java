@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.common;
+package com.github.sirblobman.staff.chat.common;
 
 public abstract class StaffChatSender {
     public abstract String getName();

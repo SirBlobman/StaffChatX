@@ -1,10 +1,10 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.SirBlobman.staffchatx.common.ChatHandler;
-import com.SirBlobman.staffchatx.common.StaffChatX;
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatX;
 
 public class StaffChatBukkit extends JavaPlugin implements StaffChatX {
     public static StaffChatBukkit INSTANCE;

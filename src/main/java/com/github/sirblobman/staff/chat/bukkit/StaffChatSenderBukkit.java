@@ -1,8 +1,8 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bukkit;
 
 import org.bukkit.command.CommandSender;
 
-import com.SirBlobman.staffchatx.common.StaffChatSender;
+import com.github.sirblobman.staff.chat.common.StaffChatSender;
 
 import java.util.Arrays;
 

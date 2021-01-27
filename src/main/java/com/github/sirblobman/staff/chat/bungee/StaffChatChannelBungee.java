@@ -1,6 +1,6 @@
-package com.SirBlobman.staffchatx.bungee;
+package com.github.sirblobman.staff.chat.bungee;
 
-import com.SirBlobman.staffchatx.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
 
 import java.util.UUID;
 

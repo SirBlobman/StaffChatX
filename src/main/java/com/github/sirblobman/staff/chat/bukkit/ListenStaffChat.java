@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bukkit;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -6,9 +6,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.SirBlobman.staffchatx.common.ChatHandler;
-import com.SirBlobman.staffchatx.common.StaffChatSender;
-import com.SirBlobman.staffchatx.common.StaffChatStatus;
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatSender;
+import com.github.sirblobman.staff.chat.common.StaffChatStatus;
 
 import java.util.UUID;
 

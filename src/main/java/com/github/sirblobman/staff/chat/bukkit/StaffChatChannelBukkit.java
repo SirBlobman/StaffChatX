@@ -1,11 +1,11 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-import com.SirBlobman.staffchatx.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
 
 import java.util.UUID;
 

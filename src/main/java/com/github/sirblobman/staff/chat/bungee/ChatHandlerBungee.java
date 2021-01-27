@@ -1,33 +1,28 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bungee;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-
-import com.SirBlobman.staffchatx.common.ChatHandler;
-import com.SirBlobman.staffchatx.common.StaffChatChannel;
-import com.SirBlobman.staffchatx.common.StaffChatSender;
-import com.SirBlobman.staffchatx.common.StaffChatStatus;
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatSender;
+import com.github.sirblobman.staff.chat.common.StaffChatStatus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
-public final class ChatHandlerBukkit extends ChatHandler {
-    private final StaffChatBukkit plugin;
-    protected ChatHandlerBukkit(StaffChatBukkit plugin) {
-        this.plugin = plugin;
-    }
-    
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
+
+public final class ChatHandlerBungee extends ChatHandler {
     @Override
     public StaffChatStatus getConsoleStatus() {
-        FileConfiguration config = this.plugin.getConfig();
+        Configuration config = StaffChatBungee.INSTANCE.getConfig();
         boolean isEnabled = config.getBoolean("options.log to console");
         StaffChatChannel channel = getChannel(config.getString("options.console channel"), false);
         
@@ -38,28 +33,28 @@ public final class ChatHandlerBukkit extends ChatHandler {
 
     @Override
     public void sendMessage(StaffChatSender sender, StaffChatChannel channel, String message) {
-        if(channel == null) channel = StaffChatChannelBukkit.getDefaultChannel();
+        if(channel == null) channel = StaffChatChannelBungee.getDefaultChannel();
         message = channel.format(sender.getName(), message);
         
-        CommandSender console = Bukkit.getConsoleSender();
+        CommandSender console = ProxyServer.getInstance().getConsole();
         if(canSeeChannel(console, channel) || console.equals(sender.getOriginalSender())) {
             String color = ChatColor.translateAlternateColorCodes('&', "[StaffChatX] [Channel: " + channel.getName() + "] " + message);
-            console.sendMessage(color);
+            console.sendMessage(TextComponent.fromLegacyText(color));
         }
         
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
             if(!canSeeChannel(player, channel)) continue;
 
             String color = ChatColor.translateAlternateColorCodes('&', message);
-            player.sendMessage(color);
+            player.sendMessage(TextComponent.fromLegacyText(color));
         }
     }
     
     private boolean canSeeChannel(CommandSender sender, StaffChatChannel channel) {
         if(channel == null) return false;
         
-        if(sender instanceof Player) {
-            Player player = (Player) sender;
+        if(sender instanceof ProxiedPlayer) {
+            ProxiedPlayer player = (ProxiedPlayer) sender;
             UUID uuid = player.getUniqueId();
             return (channel.hasPermission(uuid) && !channel.isDisabled(uuid));
         }
@@ -67,7 +62,7 @@ public final class ChatHandlerBukkit extends ChatHandler {
         StaffChatStatus consoleStatus = getConsoleStatus();
         if(consoleStatus.isEnabled()) {
             StaffChatChannel consoleChannel = consoleStatus.getChannel();
-            return (channel.equals(consoleChannel) || consoleChannel.equals(StaffChatChannelBukkit.getDefaultChannel()));
+            return (channel.equals(consoleChannel) || consoleChannel.equals(StaffChatChannelBungee.getDefaultChannel()));
         }
         
         return false;
@@ -78,24 +73,24 @@ public final class ChatHandlerBukkit extends ChatHandler {
         if(reload || CHANNEL_MAP.isEmpty()) {
             CHANNEL_MAP.clear();
             
-            FileConfiguration config = StaffChatBukkit.INSTANCE.getConfig();
-            ConfigurationSection channels = config.getConfigurationSection("channels");
-            Set<String> channelList = channels.getKeys(false);
+            Configuration config = StaffChatBungee.INSTANCE.getConfig();
+            Configuration channels = config.getSection("channels");
+            Collection<String> channelList = channels.getKeys();
             for(String channelName1 : channelList) {
                 if(channelName1.equals("default") || channelName1.equals("off")) {
-                    StaffChatBukkit.INSTANCE.getLogger().info("Found invalid channel name '" + channelName1 + "'. Please remove it to prevent issues!");
+                    StaffChatBungee.INSTANCE.getLogger().info("Found invalid channel name '" + channelName1 + "'. Please remove it to prevent issues!");
                     continue;
                 }
                 
-                ConfigurationSection channel = channels.getConfigurationSection(channelName1);
+                Configuration channel = channels.getSection(channelName1);
                 String permission = channel.getString("permission");
                 String format = channel.getString("format");
-                StaffChatChannel actualChannel = new StaffChatChannelBukkit(channelName1, permission, format);
+                StaffChatChannel actualChannel = new StaffChatChannelBungee(channelName1, permission, format);
                 CHANNEL_MAP.put(channelName1, actualChannel);
             }
         }
         
-        return CHANNEL_MAP.getOrDefault(channelName, StaffChatChannelBukkit.getDefaultChannel());
+        return CHANNEL_MAP.getOrDefault(channelName, StaffChatChannelBungee.getDefaultChannel());
     }
     
     public static List<String> getChannelNameList() {

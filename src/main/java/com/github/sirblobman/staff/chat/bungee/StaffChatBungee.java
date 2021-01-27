@@ -1,7 +1,7 @@
-package com.SirBlobman.staffchatx.bungee;
+package com.github.sirblobman.staff.chat.bungee;
 
-import com.SirBlobman.staffchatx.common.ChatHandler;
-import com.SirBlobman.staffchatx.common.StaffChatX;
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatX;
 
 import java.io.File;
 import java.io.InputStream;

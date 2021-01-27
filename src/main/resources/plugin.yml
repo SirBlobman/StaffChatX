@@ -1,11 +1,24 @@
-name: "${bukkit.plugin.name}"
-main: "${bukkit.plugin.mainClass}"
-version: "${bukkit.plugin.version}"
-description: "${bukkit.plugin.description}"
-author: "SirBlobman"
+name: "${plugin.name}"
+prefix: "${plugin.prefix}"
+description: "${plugin.description}"
+website: "https://www.spigotmc.org/resources/45874/"
+
+main: "${bukkit.plugin.main}"
+version: "${plugin.version}"
+api-version: "1.13"
+
+authors:
+  - "SirBlobman"
 
 commands:
   staffchatx:
-    aliases: [sc, scx, staffchat]
-    description: All commands related to staff chat (reload, toggle, send message)
-    usage: "/<command>"
+    description: "All commands related to StaffChatX"
+    usage: |-
+      /<command> reload
+      /<command> ts/togglesend <off/channel>
+      /<command> tv/toggleview <channel>
+      /<command> send <channel> <message...>
+    aliases:
+      - "staffchat"
+      - "scx"
+      - "sc"

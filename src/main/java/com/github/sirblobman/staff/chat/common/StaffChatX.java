@@ -1,4 +1,4 @@
-package com.SirBlobman.staffchatx.common;
+package com.github.sirblobman.staff.chat.common;
 
 import java.io.File;
 import java.util.logging.Logger;

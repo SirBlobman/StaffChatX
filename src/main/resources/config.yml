@@ -41,7 +41,12 @@ messages:
   invalid channel: "&cCould not find channel named '&a{channelName}&c'."
   
   command:
-    usage: "&f&lProper Usage:&r\n  - /<command> reload\n  - /<command> ts/togglesend <off/channel>\n  - /<command> tv/toggleview <channel>\n  - /<command> send <channel> <message...>"
+    usage: |-
+      &f&lProper Usage:&r
+      - /<command> reload
+      - /<command> ts/togglesend <off/channel>
+      - /<command> tv/toggleview <channel>
+      - /<command> send <channel> <message...>
   
     reloaded: "&6The config.yml file for StaffChatX has been reloaded"
     

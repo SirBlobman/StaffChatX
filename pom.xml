@@ -1,50 +1,68 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project>
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>com.SirBlobman</groupId>
-	<artifactId>StaffChatX</artifactId>
-	<version>1.0.0</version>
+    <packaging>jar</packaging>
+    
+	<groupId>com.github.sirblobman</groupId>
+	<artifactId>staff-chat</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+    
+    <name>StaffChatX</name>
+    <description>A plugin used to create private group chats for your server staff.</description>
 
 	<properties>
+        <java.version>1.8</java.version>
+        <spigot.version>1.8.8-R0.1-SNAPSHOT</spigot.version>
+        <bungee.version>1.16-R0.4-SNAPSHOT</bungee.version>
+    
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-
-		<bukkit.plugin.name>StaffChatX</bukkit.plugin.name>
-		<bukkit.plugin.mainClass>com.SirBlobman.staffchatx.bukkit.StaffChatBukkit</bukkit.plugin.mainClass>
-		<bukkit.plugin.version>${project.version}</bukkit.plugin.version>
-		<bukkit.plugin.description>Do your staff need privacy?</bukkit.plugin.description>
-
-		<bungee.plugin.name>StaffChatX</bungee.plugin.name>
-		<bungee.plugin.mainClass>com.SirBlobman.staffchatx.bungee.StaffChatBungee</bungee.plugin.mainClass>
-		<bungee.plugin.version>${project.version}</bungee.plugin.version>
+        
+        <plugin.name>${project.name}</plugin.name>
+        <plugin.prefix>${project.name}</plugin.prefix>
+        <plugin.description>${project.description}</plugin.description>
+        <plugin.version>2.0.0</plugin.version>
+        
+        <main.base>com.github.sirblobman.staff.chat</main.base>
+        <bukkit.plugin.main>${main.base}.bukkit.StaffChatBukkit</bukkit.plugin.main>
+        <bungee.plugin.main>${main.base}.bungee.StaffChatBungee</bungee.plugin.main>
 	</properties>
-
-	<name>StaffChatX</name>
-	<description>Do your staff need privacy?</description>
+    
+    <repositories>
+        <!-- SpigotMC Repository -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        
+        <!-- BungeeCord Repository -->
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
 
 	<dependencies>
-		<!-- Bukkit API -->
+		<!-- Spigot API -->
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.8-R0.1-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>${spigot.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- BungeeCord -->
+		<!-- BungeeCord API -->
 		<dependency>
 			<groupId>net.md-5</groupId>
 			<artifactId>bungeecord-api</artifactId>
-			<version>1.13-SNAPSHOT</version>
+			<version>${bungee.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
+        <finalName>${plugin.name}-${plugin.version}</finalName>
+        <defaultGoal>clean install</defaultGoal>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

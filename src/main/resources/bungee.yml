@@ -1,4 +1,7 @@
-name: "${bungee.plugin.name}"
-main: "${bungee.plugin.mainClass}"
-version: "${bungee.plugin.version}"
+name: "${plugin.name}"
+prefix: "${plugin.prefix}"
+description: "${plugin.description}"
+
+main: "${bungee.plugin.main}"
+version: "${plugin.version}"
 author: "SirBlobman"

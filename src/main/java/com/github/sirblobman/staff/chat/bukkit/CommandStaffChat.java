@@ -1,4 +1,9 @@
-package com.SirBlobman.staffchatx.bukkit;
+package com.github.sirblobman.staff.chat.bukkit;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,14 +12,9 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import com.SirBlobman.staffchatx.common.ChatHandler;
-import com.SirBlobman.staffchatx.common.StaffChatChannel;
-import com.SirBlobman.staffchatx.common.StaffChatStatus;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatStatus;
 
 /*
  * Sub Commands:
@@ -31,34 +31,6 @@ public class CommandStaffChat implements TabExecutor {
     
     private FileConfiguration getConfig() {
         return this.plugin.getConfig();
-    }
-    
-    private String getConfigMessage(String messageId) {
-        FileConfiguration config = getConfig();
-        String path = "messages." + messageId;
-        String message = config.getString(path, path);
-        return color(message);
-    }
-    
-    public boolean run(CommandSender sender, String[] args) {
-        if(args.length < 1) return false;
-        
-        String sub = args[0].toLowerCase();
-        switch(sub) {
-        case "reload": return reload(sender);
-        
-        case "togglesend": 
-        case "ts":
-            return toggleSend(sender, args);
-            
-        case "toggleview": 
-        case "tv":
-            return toggleView(sender, args);
-            
-        case "send": return send(sender, args);
-        
-        default: return false;
-        }
     }
     
     @Override
@@ -99,6 +71,35 @@ public class CommandStaffChat implements TabExecutor {
     private String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
+
+    private String getConfigMessage(String messageId) {
+        FileConfiguration config = getConfig();
+        String path = "messages." + messageId;
+        String message = config.getString(path, path);
+        return color(message);
+    }
+
+    private boolean run(CommandSender sender, String[] args) {
+        if(args.length < 1) return false;
+
+        String sub = args[0].toLowerCase();
+        switch(sub) {
+            case "reload": return commandReload(sender);
+            case "send": return commandSend(sender, args);
+
+            case "togglesend":
+            case "ts":
+                return commandToggleSend(sender, args);
+
+            case "toggleview":
+            case "tv":
+                return commandToggleView(sender, args);
+
+            default: break;
+        }
+
+        return false;
+    }
     
     private boolean checkPermission(CommandSender sender, String permission) {
         if(sender.hasPermission("staffchatx.*") || sender.hasPermission(permission)) return true;
@@ -108,7 +109,7 @@ public class CommandStaffChat implements TabExecutor {
         return false;
     }
     
-    private boolean reload(CommandSender sender) {
+    private boolean commandReload(CommandSender sender) {
         if(!checkPermission(sender, "staffchatx.reload")) return true;
         
         this.plugin.reloadConfig();
@@ -117,7 +118,7 @@ public class CommandStaffChat implements TabExecutor {
         return true;
     }
     
-    private boolean toggleSend(CommandSender sender, String[] args) {
+    private boolean commandToggleSend(CommandSender sender, String[] args) {
         if(!(sender instanceof Player)) {
             String message = getConfigMessage("not player");
             sender.sendMessage(message);
@@ -162,7 +163,7 @@ public class CommandStaffChat implements TabExecutor {
         return true;
     }
     
-    private boolean toggleView(CommandSender sender, String[] args) {
+    private boolean commandToggleView(CommandSender sender, String[] args) {
         String channelName = (args.length < 2 ? "default" : args[1]);
         StaffChatChannel channel = ChatHandlerBukkit.getChannel(channelName, false);
         if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
@@ -200,7 +201,7 @@ public class CommandStaffChat implements TabExecutor {
         return true;
     }
     
-    private boolean send(CommandSender sender, String[] args) {
+    private boolean commandSend(CommandSender sender, String[] args) {
         String channelName = (args.length < 2 ? "default" : args[1]);
         StaffChatChannel channel = ChatHandlerBukkit.getChannel(channelName, false);
         if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
