@@ -59,7 +59,21 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
+    
+    <distributionManagement>
+        <!-- SirBlobman Releases -->
+        <repository>
+            <id>sb-public-releases</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-releases/</url>
+        </repository>
+        
+        <!-- SirBlobman Snapshots -->
+        <snapshotRepository>
+            <id>sb-public-snapshots</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
 	<build>
         <finalName>${plugin.name}-${plugin.version}</finalName>
         <defaultGoal>clean install</defaultGoal>
