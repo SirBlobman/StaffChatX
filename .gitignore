@@ -1,17 +1,21 @@
-# Java Binary
+# Mac OSX
+.DS_Store
+._*
+
+# Java
 *.class
+*.jar
 
-# Eclipse 
-/bin/
-/.settings/
-/.externalToolBuilders/
-*.classpath
-*.project
+# IntelliJ IDEA
+.idea/
+*.iml
 
-# Custom
-*.src.zip
-*.xml
-/target/
+# Eclipse IDE
+.settings/
+bin/
+.classpath
+.project
 
-# Don't Ignore
-!pom.xml
+# Maven
+target/
+dependency-reduced-pom.xml
