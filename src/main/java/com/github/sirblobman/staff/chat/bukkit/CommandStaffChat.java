@@ -1,9 +1,12 @@
 package com.github.sirblobman.staff.chat.bukkit;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import com.github.sirblobman.staff.chat.common.ChatHandler;
 import com.github.sirblobman.staff.chat.common.StaffChatChannel;
@@ -25,22 +29,16 @@ import com.github.sirblobman.staff.chat.common.StaffChatStatus;
  */
 public class CommandStaffChat implements TabExecutor {
     private final StaffChatBukkit plugin;
+
     public CommandStaffChat(StaffChatBukkit plugin) {
-        this.plugin = plugin;
-    }
-    
-    private FileConfiguration getConfig() {
-        return this.plugin.getConfig();
+        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String cmd = command.getName().toLowerCase();
-        if(!cmd.equals("staffchatx")) return false;
-        
-        boolean success = run(sender, args);
+        boolean success = onCommand(sender, args);
         if(!success) {
-            String useMessage = getConfigMessage("command.usage").replace("<command>", label);
+            String useMessage = getMessage("command.usage").replace("<command>", label);
             sender.sendMessage(useMessage);
         }
         
@@ -49,37 +47,38 @@ public class CommandStaffChat implements TabExecutor {
     
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        String cmd = command.getName().toLowerCase();
-        if(!cmd.equals("staffchatx")) return null;
-        
         if(args.length == 1) {
-            List<String> valid = Arrays.asList("reload", "togglesend", "ts", "toggleview", "tv", "send");
-            return valid.stream().filter(item -> item.startsWith(args[0])).collect(Collectors.toList());
+            List<String> valueList = Arrays.asList("reload", "togglesend", "ts", "toggleview", "tv", "send");
+            return StringUtil.copyPartialMatches(args[0], valueList, new ArrayList<>());
         }
         
         if(args.length == 2) {
-            String sub = args[0];
-            if(sub.equals("togglesend") || sub.equals("ts") || sub.equals("toggleview") || sub.equals("tv") || sub.equals("send")) {
-                List<String> valid = ChatHandlerBukkit.getChannelNameList();
-                return valid.stream().filter(item -> item.startsWith(args[1])).collect(Collectors.toList());
+            String sub = args[0].toLowerCase(Locale.US);
+            List<String> validSubList = Arrays.asList("togglesend", "ts", "toggleview", "tv", "send");
+            if(validSubList.contains(sub)) {
+                List<String> valueList = ChatHandlerBukkit.getChannelNameList();
+                return StringUtil.copyPartialMatches(args[1], valueList, new ArrayList<>());
             }
         }
         
-        return null;
+        return Collections.emptyList();
+    }
+
+    private FileConfiguration getConfiguration() {
+        return this.plugin.getConfig();
     }
     
     private String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    private String getConfigMessage(String messageId) {
-        FileConfiguration config = getConfig();
-        String path = "messages." + messageId;
-        String message = config.getString(path, path);
+    private String getMessage(String key) {
+        FileConfiguration configuration = getConfiguration();
+        String message = configuration.getString("messages." + key, "{" + key + "}");
         return color(message);
     }
 
-    private boolean run(CommandSender sender, String[] args) {
+    private boolean onCommand(CommandSender sender, String[] args) {
         if(args.length < 1) return false;
 
         String sub = args[0].toLowerCase();
@@ -101,26 +100,26 @@ public class CommandStaffChat implements TabExecutor {
         return false;
     }
     
-    private boolean checkPermission(CommandSender sender, String permission) {
-        if(sender.hasPermission("staffchatx.*") || sender.hasPermission(permission)) return true;
+    private boolean checkReloadPermission(CommandSender sender) {
+        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) return true;
         
-        String message = getConfigMessage("no permission");
+        String message = getMessage("no permission");
         sender.sendMessage(message);
         return false;
     }
     
     private boolean commandReload(CommandSender sender) {
-        if(!checkPermission(sender, "staffchatx.reload")) return true;
+        if(!checkReloadPermission(sender)) return true;
         
         this.plugin.reloadConfig();
-        String message = getConfigMessage("command.reloaded");
+        String message = getMessage("command.reloaded");
         sender.sendMessage(message);
         return true;
     }
     
     private boolean commandToggleSend(CommandSender sender, String[] args) {
         if(!(sender instanceof Player)) {
-            String message = getConfigMessage("not player");
+            String message = getMessage("not player");
             sender.sendMessage(message);
             return true;
         }
@@ -134,7 +133,7 @@ public class CommandStaffChat implements TabExecutor {
             status.setStatus(false);
             ChatHandler.setStatus(uuid, status);
             
-            String message = getConfigMessage("command.togglesend.disabled");
+            String message = getMessage("command.togglesend.disabled");
             player.sendMessage(message);
             return true;
         }
@@ -143,13 +142,13 @@ public class CommandStaffChat implements TabExecutor {
         if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
         
         if(channel == null) {
-            String message = getConfigMessage("invalid channel").replace("{channelName}", channelName);
+            String message = getMessage("invalid channel").replace("{channelName}", channelName);
             player.sendMessage(message);
             return true;
         }
         
         if(!channel.hasPermission(uuid)) {
-            String message = getConfigMessage("no permission");
+            String message = getMessage("no permission");
             player.sendMessage(message);
             return true;
         }
@@ -158,7 +157,7 @@ public class CommandStaffChat implements TabExecutor {
         status.setStatus(true);
         ChatHandler.setStatus(uuid, status);
         
-        String message = getConfigMessage("command.togglesend.channel").replace("{channelName}", channel.getName());
+        String message = getMessage("command.togglesend.channel").replace("{channelName}", channel.getName());
         player.sendMessage(message);
         return true;
     }
@@ -169,7 +168,7 @@ public class CommandStaffChat implements TabExecutor {
         if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
         
         if(channel == null) {
-            String message = getConfigMessage("invalid channel").replace("{channelName}", channelName);
+            String message = getMessage("invalid channel").replace("{channelName}", channelName);
             sender.sendMessage(message);
             return true;
         }
@@ -179,7 +178,7 @@ public class CommandStaffChat implements TabExecutor {
             UUID uuid = player.getUniqueId();
             
             if(!channel.hasPermission(uuid)) {
-                String message = getConfigMessage("no permission");
+                String message = getMessage("no permission");
                 player.sendMessage(message);
                 return true;
             }
@@ -187,16 +186,16 @@ public class CommandStaffChat implements TabExecutor {
             channel.toggle(uuid);
             
             boolean disabled = channel.isDisabled(uuid);
-            String message = getConfigMessage("command.toggleview." + (disabled ? "disabled" : "enabled")).replace("{channelName}", channel.getName());
+            String message = getMessage("command.toggleview." + (disabled ? "disabled" : "enabled")).replace("{channelName}", channel.getName());
             player.sendMessage(message);
             return true;
         }
         
-        FileConfiguration config = getConfig();
+        FileConfiguration config = getConfiguration();
         config.set("options.console channel", channel.getName().equals("default") ? "" : channel.getName());
         this.plugin.saveConfig();
         
-        String message = getConfigMessage("command.toggleview." + (channel.getName().equals("default") ? "console default" : "enabled")).replace("{channelName}", channel.getName());
+        String message = getMessage("command.toggleview." + (channel.getName().equals("default") ? "console default" : "enabled")).replace("{channelName}", channel.getName());
         sender.sendMessage(message);
         return true;
     }
@@ -207,14 +206,14 @@ public class CommandStaffChat implements TabExecutor {
         if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
         
         if(channel == null) {
-            String message = getConfigMessage("invalid channel").replace("{channelName}", channelName);
+            String message = getMessage("invalid channel").replace("{channelName}", channelName);
             sender.sendMessage(message);
             return true;
         }
         
-        boolean hasPermission = (sender instanceof Player ? channel.hasPermission(((Player) sender).getUniqueId()) : true);
+        boolean hasPermission = (!(sender instanceof Player) || channel.hasPermission(((Player) sender).getUniqueId()));
         if(!hasPermission) {
-            String message = getConfigMessage("no permission");
+            String message = getMessage("no permission");
             sender.sendMessage(message);
             return true;
         }

@@ -8,11 +8,12 @@
     
     <name>StaffChatX</name>
     <description>A plugin used to create private group chats for your server staff.</description>
+    <url>https://www.spigotmc.org/resources/45874/</url>
 
 	<properties>
         <java.version>1.8</java.version>
         <spigot.version>1.8.8-R0.1-SNAPSHOT</spigot.version>
-        <bungee.version>1.16-R0.5-SNAPSHOT</bungee.version>
+        <bungee.version>1.17-R0.1-SNAPSHOT</bungee.version>
     
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
@@ -21,7 +22,7 @@
         <plugin.name>${project.name}</plugin.name>
         <plugin.prefix>${project.name}</plugin.prefix>
         <plugin.description>${project.description}</plugin.description>
-        <plugin.version>2.0.0</plugin.version>
+        <plugin.version>2.1.0</plugin.version>
         
         <main.base>com.github.sirblobman.staff.chat</main.base>
         <bukkit.plugin.main>${main.base}.bukkit.StaffChatBukkit</bukkit.plugin.main>

@@ -1,6 +1,7 @@
 name: "${plugin.name}"
 prefix: "${plugin.prefix}"
 description: "${plugin.description}"
+website: "${project.url}"
 
 main: "${bungee.plugin.main}"
 version: "${plugin.version}"

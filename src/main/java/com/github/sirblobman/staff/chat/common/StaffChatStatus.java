@@ -1,6 +1,6 @@
 package com.github.sirblobman.staff.chat.common;
 
-public class StaffChatStatus {
+public final class StaffChatStatus {
     private boolean isEnabled;
     private StaffChatChannel channel;
     

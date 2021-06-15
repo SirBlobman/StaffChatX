@@ -1,7 +1,7 @@
 name: "${plugin.name}"
 prefix: "${plugin.prefix}"
 description: "${plugin.description}"
-website: "https://www.spigotmc.org/resources/45874/"
+website: "${project.url}"
 
 main: "${bukkit.plugin.main}"
 version: "${plugin.version}"

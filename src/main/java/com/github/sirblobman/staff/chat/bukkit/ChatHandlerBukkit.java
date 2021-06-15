@@ -16,22 +16,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 public final class ChatHandlerBukkit extends ChatHandler {
+    private static final Map<String, StaffChatChannel> CHANNEL_MAP = new HashMap<>();
     private final StaffChatBukkit plugin;
+
     protected ChatHandlerBukkit(StaffChatBukkit plugin) {
-        this.plugin = plugin;
+        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
     
     @Override
     public StaffChatStatus getConsoleStatus() {
-        FileConfiguration config = this.plugin.getConfig();
-        boolean isEnabled = config.getBoolean("options.log to console");
-        StaffChatChannel channel = getChannel(config.getString("options.console channel"), false);
+        FileConfiguration configuration = this.plugin.getConfig();
+        boolean enabled = configuration.getBoolean("options.log to console");
+        StaffChatChannel channel = getChannel(configuration.getString("options.console channel"), false);
         
-        StaffChatStatus status = new StaffChatStatus(isEnabled);
+        StaffChatStatus status = new StaffChatStatus(enabled);
         status.setChannel(channel);
         return status;
     }
@@ -43,7 +46,8 @@ public final class ChatHandlerBukkit extends ChatHandler {
         
         CommandSender console = Bukkit.getConsoleSender();
         if(canSeeChannel(console, channel) || console.equals(sender.getOriginalSender())) {
-            String color = ChatColor.translateAlternateColorCodes('&', "[StaffChatX] [Channel: " + channel.getName() + "] " + message);
+            String color = ChatColor.translateAlternateColorCodes('&',
+                    "[StaffChatX] [Channel: " + channel.getName() + "] " + message);
             console.sendMessage(color);
         }
         
@@ -72,8 +76,7 @@ public final class ChatHandlerBukkit extends ChatHandler {
         
         return false;
     }
-    
-    private static final Map<String, StaffChatChannel> CHANNEL_MAP = new HashMap<>();
+
     public static StaffChatChannel getChannel(String channelName, boolean reload) {
         if(reload || CHANNEL_MAP.isEmpty()) {
             CHANNEL_MAP.clear();

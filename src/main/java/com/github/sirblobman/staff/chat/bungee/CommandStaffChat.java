@@ -90,8 +90,8 @@ public class CommandStaffChat extends Command implements TabExecutor {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
     
-    private boolean checkPermission(CommandSender sender, String permission) {
-        if(sender.hasPermission("staffchatx.*") || sender.hasPermission(permission)) return true;
+    private boolean checkReloadPermission(CommandSender sender) {
+        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) return true;
         
         String message = getConfigMessage("no permission");
         sender.sendMessage(TextComponent.fromLegacyText(message));
@@ -99,7 +99,7 @@ public class CommandStaffChat extends Command implements TabExecutor {
     }
     
     private boolean reload(CommandSender sender) {
-        if(!checkPermission(sender, "staffchatx.reload")) return true;
+        if(!checkReloadPermission(sender)) return true;
         
         this.plugin.getConfig();
         String message = getConfigMessage("command.reloaded");
@@ -201,7 +201,7 @@ public class CommandStaffChat extends Command implements TabExecutor {
             return true;
         }
         
-        boolean hasPermission = (sender instanceof ProxiedPlayer ? channel.hasPermission(((ProxiedPlayer) sender).getUniqueId()) : true);
+        boolean hasPermission = (!(sender instanceof ProxiedPlayer) || channel.hasPermission(((ProxiedPlayer) sender).getUniqueId()));
         if(!hasPermission) {
             String message = getConfigMessage("no permission");
             sender.sendMessage(TextComponent.fromLegacyText(message));

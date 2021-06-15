@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public class StaffChatSenderBukkit extends StaffChatSender {
     private final CommandSender sender;
+
     public StaffChatSenderBukkit(CommandSender sender) {
         this.sender = sender;
     }
@@ -29,6 +30,8 @@ public class StaffChatSenderBukkit extends StaffChatSender {
 
     @Override
     public void sendMessage(String... messages) {
-        Arrays.stream(messages).forEach(this::sendMessage);
+        for(String message : messages) {
+            sendMessage(message);
+        }
     }
 }
