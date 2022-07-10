@@ -1,10 +1,5 @@
 package com.github.sirblobman.staff.chat.bungee;
 
-import com.github.sirblobman.staff.chat.common.ChatHandler;
-import com.github.sirblobman.staff.chat.common.StaffChatChannel;
-import com.github.sirblobman.staff.chat.common.StaffChatSender;
-import com.github.sirblobman.staff.chat.common.StaffChatStatus;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +13,11 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
+
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatSender;
+import com.github.sirblobman.staff.chat.common.StaffChatStatus;
 
 public final class ChatHandlerBungee extends ChatHandler {
     @Override
@@ -33,17 +33,22 @@ public final class ChatHandlerBungee extends ChatHandler {
 
     @Override
     public void sendMessage(StaffChatSender sender, StaffChatChannel channel, String message) {
-        if(channel == null) channel = StaffChatChannelBungee.getDefaultChannel();
+        if(channel == null) {
+            channel = StaffChatChannelBungee.getDefaultChannel();
+        }
+
         message = channel.format(sender.getName(), message);
-        
         CommandSender console = ProxyServer.getInstance().getConsole();
         if(canSeeChannel(console, channel) || console.equals(sender.getOriginalSender())) {
-            String color = ChatColor.translateAlternateColorCodes('&', "[StaffChatX] [Channel: " + channel.getName() + "] " + message);
+            String color = ChatColor.translateAlternateColorCodes('&',
+                    "[StaffChatX] [Channel: " + channel.getName() + "] " + message);
             console.sendMessage(TextComponent.fromLegacyText(color));
         }
         
         for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-            if(!canSeeChannel(player, channel)) continue;
+            if(!canSeeChannel(player, channel)) {
+                continue;
+            }
 
             String color = ChatColor.translateAlternateColorCodes('&', message);
             player.sendMessage(TextComponent.fromLegacyText(color));
@@ -51,7 +56,9 @@ public final class ChatHandlerBungee extends ChatHandler {
     }
     
     private boolean canSeeChannel(CommandSender sender, StaffChatChannel channel) {
-        if(channel == null) return false;
+        if(channel == null) {
+            return false;
+        }
         
         if(sender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) sender;
@@ -62,7 +69,8 @@ public final class ChatHandlerBungee extends ChatHandler {
         StaffChatStatus consoleStatus = getConsoleStatus();
         if(consoleStatus.isEnabled()) {
             StaffChatChannel consoleChannel = consoleStatus.getChannel();
-            return (channel.equals(consoleChannel) || consoleChannel.equals(StaffChatChannelBungee.getDefaultChannel()));
+            return (channel.equals(consoleChannel)
+                    || consoleChannel.equals(StaffChatChannelBungee.getDefaultChannel()));
         }
         
         return false;
@@ -78,7 +86,8 @@ public final class ChatHandlerBungee extends ChatHandler {
             Collection<String> channelList = channels.getKeys();
             for(String channelName1 : channelList) {
                 if(channelName1.equals("default") || channelName1.equals("off")) {
-                    StaffChatBungee.INSTANCE.getLogger().info("Found invalid channel name '" + channelName1 + "'. Please remove it to prevent issues!");
+                    StaffChatBungee.INSTANCE.getLogger().info("Found invalid channel name '"
+                            + channelName1 + "'. Please remove it to prevent issues!");
                     continue;
                 }
                 

@@ -1,5 +1,8 @@
 package com.github.sirblobman.staff.chat.bukkit;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,9 +14,6 @@ import com.github.sirblobman.staff.chat.common.ChatHandler;
 import com.github.sirblobman.staff.chat.common.StaffChatChannel;
 import com.github.sirblobman.staff.chat.common.StaffChatSender;
 import com.github.sirblobman.staff.chat.common.StaffChatStatus;
-
-import java.util.Objects;
-import java.util.UUID;
 
 public final class ListenerStaffChat implements Listener {
     private final StaffChatBukkit plugin;
@@ -28,7 +28,9 @@ public final class ListenerStaffChat implements Listener {
         UUID uuid = player.getUniqueId();
         
         StaffChatStatus status = ChatHandler.getStatus(uuid);
-        if(!status.isEnabled()) return;
+        if(!status.isEnabled()) {
+            return;
+        }
         
         String message = e.getMessage();
         FileConfiguration configuration = this.plugin.getConfig();

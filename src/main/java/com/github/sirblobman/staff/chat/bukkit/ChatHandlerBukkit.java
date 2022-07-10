@@ -1,5 +1,13 @@
 package com.github.sirblobman.staff.chat.bukkit;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -12,19 +20,11 @@ import com.github.sirblobman.staff.chat.common.StaffChatChannel;
 import com.github.sirblobman.staff.chat.common.StaffChatSender;
 import com.github.sirblobman.staff.chat.common.StaffChatStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
 public final class ChatHandlerBukkit extends ChatHandler {
     private static final Map<String, StaffChatChannel> CHANNEL_MAP = new HashMap<>();
     private final StaffChatBukkit plugin;
 
-    protected ChatHandlerBukkit(StaffChatBukkit plugin) {
+    ChatHandlerBukkit(StaffChatBukkit plugin) {
         this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
     
@@ -41,9 +41,11 @@ public final class ChatHandlerBukkit extends ChatHandler {
 
     @Override
     public void sendMessage(StaffChatSender sender, StaffChatChannel channel, String message) {
-        if(channel == null) channel = StaffChatChannelBukkit.getDefaultChannel();
+        if(channel == null) {
+            channel = StaffChatChannelBukkit.getDefaultChannel();
+        }
+
         message = channel.format(sender.getName(), message);
-        
         CommandSender console = Bukkit.getConsoleSender();
         if(canSeeChannel(console, channel) || console.equals(sender.getOriginalSender())) {
             String color = ChatColor.translateAlternateColorCodes('&',
@@ -52,7 +54,9 @@ public final class ChatHandlerBukkit extends ChatHandler {
         }
         
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(!canSeeChannel(player, channel)) continue;
+            if(!canSeeChannel(player, channel)) {
+                continue;
+            }
 
             String color = ChatColor.translateAlternateColorCodes('&', message);
             player.sendMessage(color);
@@ -60,7 +64,9 @@ public final class ChatHandlerBukkit extends ChatHandler {
     }
     
     private boolean canSeeChannel(CommandSender sender, StaffChatChannel channel) {
-        if(channel == null) return false;
+        if(channel == null) {
+            return false;
+        }
         
         if(sender instanceof Player) {
             Player player = (Player) sender;
@@ -71,7 +77,8 @@ public final class ChatHandlerBukkit extends ChatHandler {
         StaffChatStatus consoleStatus = getConsoleStatus();
         if(consoleStatus.isEnabled()) {
             StaffChatChannel consoleChannel = consoleStatus.getChannel();
-            return (channel.equals(consoleChannel) || consoleChannel.equals(StaffChatChannelBukkit.getDefaultChannel()));
+            return (channel.equals(consoleChannel)
+                    || consoleChannel.equals(StaffChatChannelBukkit.getDefaultChannel()));
         }
         
         return false;
@@ -86,7 +93,8 @@ public final class ChatHandlerBukkit extends ChatHandler {
             Set<String> channelList = channels.getKeys(false);
             for(String channelName1 : channelList) {
                 if(channelName1.equals("default") || channelName1.equals("off")) {
-                    StaffChatBukkit.INSTANCE.getLogger().info("Found invalid channel name '" + channelName1 + "'. Please remove it to prevent issues!");
+                    StaffChatBukkit.INSTANCE.getLogger().info("Found invalid channel name '"
+                            + channelName1 + "'. Please remove it to prevent issues!");
                     continue;
                 }
                 

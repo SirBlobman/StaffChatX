@@ -4,9 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.github.sirblobman.staff.chat.common.StaffChatSender;
 
-import java.util.Arrays;
-
-public class StaffChatSenderBukkit extends StaffChatSender {
+public final class StaffChatSenderBukkit extends StaffChatSender {
     private final CommandSender sender;
 
     public StaffChatSenderBukkit(CommandSender sender) {

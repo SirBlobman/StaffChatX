@@ -7,17 +7,21 @@ import java.util.UUID;
 public abstract class ChatHandler {
     private static final Map<UUID, StaffChatStatus> STAFF_CHAT_STATUS = new HashMap<>();
     
-    public static void setStatus(UUID uuid, StaffChatStatus status) {
-        if(uuid == null || status == null) return;
+    public static void setStatus(UUID playerId, StaffChatStatus status) {
+        if(playerId == null || status == null) {
+            return;
+        }
         
-        STAFF_CHAT_STATUS.put(uuid, status);
+        STAFF_CHAT_STATUS.put(playerId, status);
     }
     
-    public static StaffChatStatus getStatus(UUID uuid) {
-        if(uuid == null) return null;
+    public static StaffChatStatus getStatus(UUID playerId) {
+        if(playerId == null) {
+            return null;
+        }
         
         StaffChatStatus defaultStatus = new StaffChatStatus(false);        
-        return STAFF_CHAT_STATUS.getOrDefault(uuid, defaultStatus);
+        return STAFF_CHAT_STATUS.getOrDefault(playerId, defaultStatus);
     }
     
     public abstract StaffChatStatus getConsoleStatus();

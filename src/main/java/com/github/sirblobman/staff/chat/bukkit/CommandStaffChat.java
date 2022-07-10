@@ -27,7 +27,7 @@ import com.github.sirblobman.staff.chat.common.StaffChatStatus;
  * toggleview [channel] - Toggle viewing messages in the channel named [channel]. Defaults to "default" if the argument is missing.
  * send <channel> <message...> - Send a message to a specific channel.
  */
-public class CommandStaffChat implements TabExecutor {
+public final class CommandStaffChat implements TabExecutor {
     private final StaffChatBukkit plugin;
 
     public CommandStaffChat(StaffChatBukkit plugin) {
@@ -79,7 +79,9 @@ public class CommandStaffChat implements TabExecutor {
     }
 
     private boolean onCommand(CommandSender sender, String[] args) {
-        if(args.length < 1) return false;
+        if(args.length < 1) {
+            return false;
+        }
 
         String sub = args[0].toLowerCase();
         switch(sub) {
@@ -101,7 +103,9 @@ public class CommandStaffChat implements TabExecutor {
     }
     
     private boolean checkReloadPermission(CommandSender sender) {
-        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) return true;
+        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) {
+            return true;
+        }
         
         String message = getMessage("no permission");
         sender.sendMessage(message);
@@ -109,7 +113,9 @@ public class CommandStaffChat implements TabExecutor {
     }
     
     private boolean commandReload(CommandSender sender) {
-        if(!checkReloadPermission(sender)) return true;
+        if(!checkReloadPermission(sender)) {
+            return true;
+        }
         
         this.plugin.reloadConfig();
         String message = getMessage("command.reloaded");
@@ -157,7 +163,8 @@ public class CommandStaffChat implements TabExecutor {
         status.setStatus(true);
         ChatHandler.setStatus(uuid, status);
         
-        String message = getMessage("command.togglesend.channel").replace("{channelName}", channel.getName());
+        String message = getMessage("command.togglesend.channel")
+                .replace("{channelName}", channel.getName());
         player.sendMessage(message);
         return true;
     }
@@ -186,7 +193,8 @@ public class CommandStaffChat implements TabExecutor {
             channel.toggle(uuid);
             
             boolean disabled = channel.isDisabled(uuid);
-            String message = getMessage("command.toggleview." + (disabled ? "disabled" : "enabled")).replace("{channelName}", channel.getName());
+            String message = getMessage("command.toggleview." + (disabled ? "disabled" : "enabled"))
+                    .replace("{channelName}", channel.getName());
             player.sendMessage(message);
             return true;
         }
@@ -195,7 +203,9 @@ public class CommandStaffChat implements TabExecutor {
         config.set("options.console channel", channel.getName().equals("default") ? "" : channel.getName());
         this.plugin.saveConfig();
         
-        String message = getMessage("command.toggleview." + (channel.getName().equals("default") ? "console default" : "enabled")).replace("{channelName}", channel.getName());
+        String message = getMessage("command.toggleview."
+                + (channel.getName().equals("default") ? "console default" : "enabled"))
+                .replace("{channelName}", channel.getName());
         sender.sendMessage(message);
         return true;
     }
@@ -203,7 +213,9 @@ public class CommandStaffChat implements TabExecutor {
     private boolean commandSend(CommandSender sender, String[] args) {
         String channelName = (args.length < 2 ? "default" : args[1]);
         StaffChatChannel channel = ChatHandlerBukkit.getChannel(channelName, false);
-        if(channelName.equals("default")) channel = StaffChatChannelBukkit.getDefaultChannel();
+        if(channelName.equals("default")) {
+            channel = StaffChatChannelBukkit.getDefaultChannel();
+        }
         
         if(channel == null) {
             String message = getMessage("invalid channel").replace("{channelName}", channelName);
@@ -211,14 +223,17 @@ public class CommandStaffChat implements TabExecutor {
             return true;
         }
         
-        boolean hasPermission = (!(sender instanceof Player) || channel.hasPermission(((Player) sender).getUniqueId()));
+        boolean hasPermission = (!(sender instanceof Player)
+                || channel.hasPermission(((Player) sender).getUniqueId()));
         if(!hasPermission) {
             String message = getMessage("no permission");
             sender.sendMessage(message);
             return true;
         }
         
-        if(args.length < 3) return false;
+        if(args.length < 3) {
+            return false;
+        }
         
         String toSend = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
         this.plugin.getChatHandler().sendMessage(new StaffChatSenderBukkit(sender), channel, toSend);

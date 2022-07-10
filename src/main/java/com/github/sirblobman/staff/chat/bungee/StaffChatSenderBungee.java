@@ -1,14 +1,14 @@
 package com.github.sirblobman.staff.chat.bungee;
 
-import com.github.sirblobman.staff.chat.common.StaffChatSender;
-
 import java.util.Arrays;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class StaffChatSenderBungee extends StaffChatSender {
+import com.github.sirblobman.staff.chat.common.StaffChatSender;
+
+public final class StaffChatSenderBungee extends StaffChatSender {
     private final CommandSender sender;
     public StaffChatSenderBungee(CommandSender sender) {
         this.sender = sender;

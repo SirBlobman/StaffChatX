@@ -1,5 +1,7 @@
 package com.github.sirblobman.staff.chat.bukkit;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -7,9 +9,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import com.github.sirblobman.staff.chat.common.StaffChatChannel;
 
-import java.util.UUID;
-
-public class StaffChatChannelBukkit extends StaffChatChannel {
+public final class StaffChatChannelBukkit extends StaffChatChannel {
     private static final StaffChatChannelBukkit DEFAULT_CHANNEL;
 
     static {
@@ -26,8 +26,8 @@ public class StaffChatChannelBukkit extends StaffChatChannel {
     }
     
     @Override
-    public boolean hasPermission(UUID uuid) {
-        Player player = Bukkit.getPlayer(uuid);
+    public boolean hasPermission(UUID playerId) {
+        Player player = Bukkit.getPlayer(playerId);
         if(player == null) return false;
 
         String permissionName = getPermission();

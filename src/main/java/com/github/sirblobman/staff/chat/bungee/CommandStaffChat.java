@@ -1,9 +1,5 @@
 package com.github.sirblobman.staff.chat.bungee;
 
-import com.github.sirblobman.staff.chat.common.ChatHandler;
-import com.github.sirblobman.staff.chat.common.StaffChatChannel;
-import com.github.sirblobman.staff.chat.common.StaffChatStatus;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +15,13 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import net.md_5.bungee.config.Configuration;
 
-public class CommandStaffChat extends Command implements TabExecutor {
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatChannel;
+import com.github.sirblobman.staff.chat.common.StaffChatStatus;
+
+public final class CommandStaffChat extends Command implements TabExecutor {
     private final StaffChatBungee plugin;
+
     public CommandStaffChat(StaffChatBungee plugin) {
         super("staffchatx", "", "sc", "scx", "staffchat");
         this.plugin = plugin;
@@ -46,7 +47,8 @@ public class CommandStaffChat extends Command implements TabExecutor {
         
         if(args.length == 2) {
             String sub = args[0];
-            if(sub.equals("togglesend") || sub.equals("ts") || sub.equals("toggleview") || sub.equals("tv") || sub.equals("send")) {
+            if(sub.equals("togglesend") || sub.equals("ts") || sub.equals("toggleview") || sub.equals("tv")
+                    || sub.equals("send")) {
                 List<String> valid = ChatHandlerBungee.getChannelNameList();
                 return valid.stream().filter(item -> item.startsWith(args[1])).collect(Collectors.toList());
             }
@@ -66,7 +68,9 @@ public class CommandStaffChat extends Command implements TabExecutor {
     }
     
     public boolean run(CommandSender sender, String[] args) {
-        if(args.length < 1) return false;
+        if(args.length < 1) {
+            return false;
+        }
         
         String sub = args[0].toLowerCase();
         switch(sub) {
@@ -91,7 +95,9 @@ public class CommandStaffChat extends Command implements TabExecutor {
     }
     
     private boolean checkReloadPermission(CommandSender sender) {
-        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) return true;
+        if(sender.hasPermission("staffchatx.*") || sender.hasPermission("staffchatx.reload")) {
+            return true;
+        }
         
         String message = getConfigMessage("no permission");
         sender.sendMessage(TextComponent.fromLegacyText(message));
@@ -99,7 +105,9 @@ public class CommandStaffChat extends Command implements TabExecutor {
     }
     
     private boolean reload(CommandSender sender) {
-        if(!checkReloadPermission(sender)) return true;
+        if(!checkReloadPermission(sender)) {
+            return true;
+        }
         
         this.plugin.getConfig();
         String message = getConfigMessage("command.reloaded");
@@ -132,7 +140,8 @@ public class CommandStaffChat extends Command implements TabExecutor {
         if(channelName.equals("default")) channel = StaffChatChannelBungee.getDefaultChannel();
         
         if(channel == null) {
-            String message = getConfigMessage("invalid channel").replace("{channelName}", channelName);
+            String message = getConfigMessage("invalid channel")
+                    .replace("{channelName}", channelName);
             ProxiedPlayer.sendMessage(TextComponent.fromLegacyText(message));
             return true;
         }
@@ -147,7 +156,8 @@ public class CommandStaffChat extends Command implements TabExecutor {
         status.setStatus(true);
         ChatHandler.setStatus(uuid, status);
         
-        String message = getConfigMessage("command.togglesend.channel").replace("{channelName}", channel.getName());
+        String message = getConfigMessage("command.togglesend.channel")
+                .replace("{channelName}", channel.getName());
         ProxiedPlayer.sendMessage(TextComponent.fromLegacyText(message));
         return true;
     }
@@ -176,7 +186,8 @@ public class CommandStaffChat extends Command implements TabExecutor {
             channel.toggle(uuid);
             
             boolean disabled = channel.isDisabled(uuid);
-            String message = getConfigMessage("command.toggleview." + (disabled ? "disabled" : "enabled")).replace("{channelName}", channel.getName());
+            String message = getConfigMessage("command.toggleview."
+                    + (disabled ? "disabled" : "enabled")).replace("{channelName}", channel.getName());
             ProxiedPlayer.sendMessage(TextComponent.fromLegacyText(message));
             return true;
         }
@@ -185,7 +196,9 @@ public class CommandStaffChat extends Command implements TabExecutor {
         config.set("options.console channel", channel.getName().equals("default") ? "" : channel.getName());
         this.plugin.saveConfig(config);
         
-        String message = getConfigMessage("command.toggleview." + (channel.getName().equals("default") ? "console default" : "enabled")).replace("{channelName}", channel.getName());
+        String message = getConfigMessage("command.toggleview."
+                + (channel.getName().equals("default") ? "console default" : "enabled"))
+                .replace("{channelName}", channel.getName());
         sender.sendMessage(TextComponent.fromLegacyText(message));
         return true;
     }
@@ -196,19 +209,23 @@ public class CommandStaffChat extends Command implements TabExecutor {
         if(channelName.equals("default")) channel = StaffChatChannelBungee.getDefaultChannel();
         
         if(channel == null) {
-            String message = getConfigMessage("invalid channel").replace("{channelName}", channelName);
+            String message = getConfigMessage("invalid channel")
+                    .replace("{channelName}", channelName);
             sender.sendMessage(TextComponent.fromLegacyText(message));
             return true;
         }
         
-        boolean hasPermission = (!(sender instanceof ProxiedPlayer) || channel.hasPermission(((ProxiedPlayer) sender).getUniqueId()));
+        boolean hasPermission = (!(sender instanceof ProxiedPlayer)
+                || channel.hasPermission(((ProxiedPlayer) sender).getUniqueId()));
         if(!hasPermission) {
             String message = getConfigMessage("no permission");
             sender.sendMessage(TextComponent.fromLegacyText(message));
             return true;
         }
         
-        if(args.length < 3) return false;
+        if(args.length < 3) {
+            return false;
+        }
         
         String toSend = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
         this.plugin.getChatHandler().sendMessage(new StaffChatSenderBungee(sender), channel, toSend);

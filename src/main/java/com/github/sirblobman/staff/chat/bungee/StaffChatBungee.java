@@ -1,9 +1,7 @@
 package com.github.sirblobman.staff.chat.bungee;
 
-import com.github.sirblobman.staff.chat.common.ChatHandler;
-import com.github.sirblobman.staff.chat.common.StaffChatX;
-
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +13,10 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-public class StaffChatBungee extends Plugin implements StaffChatX {
+import com.github.sirblobman.staff.chat.common.ChatHandler;
+import com.github.sirblobman.staff.chat.common.StaffChatX;
+
+public final class StaffChatBungee extends Plugin implements StaffChatX {
     public static StaffChatBungee INSTANCE;
     public static ChatHandlerBungee CHAT_HANDLER;
     
@@ -38,7 +39,9 @@ public class StaffChatBungee extends Plugin implements StaffChatX {
     public Configuration getConfig() {
         try {
             File folder = getDataFolder();
-            if(!folder.exists()) folder.mkdirs();
+            if(!folder.exists() && !folder.mkdirs()) {
+                throw new IOException("Failed to create data folder.");
+            }
             
             File file = new File(folder, "config.yml");
             if(!file.exists()) {
@@ -52,9 +55,8 @@ public class StaffChatBungee extends Plugin implements StaffChatX {
                 Files.copy(internalConfig, path, StandardCopyOption.REPLACE_EXISTING);
                 internalConfig.close();
             }
-            
-            Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-            return config;
+
+            return ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch(Exception ex) {
             getLogger().info("An error occurred while loading config.yml!");
             ex.printStackTrace();
@@ -65,7 +67,9 @@ public class StaffChatBungee extends Plugin implements StaffChatX {
     public void saveConfig(Configuration config) {
         try {
             File folder = getDataFolder();
-            if(!folder.exists()) folder.mkdirs();
+            if(!folder.exists() && !folder.mkdirs()) {
+                throw new IOException("Failed to create data folder.");
+            }
             
             File file = new File(folder, "config.yml");
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, file);
